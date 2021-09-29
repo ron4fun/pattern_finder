@@ -1,4 +1,4 @@
-## NumberToWord [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ron4fun/pattern_finder/blob/main/LICENSE) [![Build Status](https://travis-ci.com/ron4fun/pattern_finder.svg?branch=main)](https://travis-ci.com/ron4fun/pattern_finder)
+## pattern_finder [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ron4fun/pattern_finder/blob/main/LICENSE) [![Build Status](https://travis-ci.com/ron4fun/pattern_finder.svg?branch=main)](https://travis-ci.com/ron4fun/pattern_finder)
 
 **`pattern_finder`** is a compact library written in **Dart** language that is primarily used for signature matching and/or wildcard pattern finder in byte streams.
 
