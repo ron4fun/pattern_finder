@@ -1,0 +1,29 @@
+language: dart
+dart:
+  - dev
+  # Install a specific stable release - 2.8.3
+  - "2.8.3"
+
+dart_task:
+  - test: --platform vm
+  - test: --exclude-tags no-xvfb
+    xvfb: true
+
+env:
+  global:
+    - TRAVIS_DART_VERSION=2.8.3
+    - TRAVIS_DART_TEST=true
+    - TRAVIS_DART_ANALYZE=false
+    - TRAVIS_DART_FORMAT=false
+
+matrix:
+  include:
+    - os: windows
+    - os: linux
+      dist: trusty
+    - os: osx
+      osx_image: xcode11.2
+
+branches:
+  only:
+    - main
