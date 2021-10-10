@@ -118,12 +118,22 @@
   int tempOffset;
 
   List&lt;Signature&gt; found = [];
-  List&lt;Signature&gt; sigs = signatures;
+  List&lt;Signature&gt; sigs = new List&lt;Signature&gt;.from(signatures);
 
   for (int i = 0; i &lt; sigs.length; i++) {
     tempOffset = PatternFinder.Find_B(data, length, sigs[i].Pattern);
     if (tempOffset != -1) {
       sigs[i].FoundOffset = tempOffset;
+      if (sigs[i].ExecFunc != null) {
+        try {
+          sigs[i].ExecFunc(tempOffset);
+        } on NoSuchMethodError {
+          sigs[i].ExecFunc();
+        } catch (e) {
+          throw new Exception(&#39;Incorrectly formed signature function&#39;);
+        }
+      }
+      &#47;&#47; add to found signatures array
       found.add(sigs[i]);
     } &#47;&#47; end if
   } &#47;&#47; end for
@@ -142,7 +152,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          pattern_finder 1.0.0
+          pattern_finder 1.2.0
         </span>
         &bull;
         <span class="no-break">

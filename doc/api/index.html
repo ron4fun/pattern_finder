@@ -73,20 +73,96 @@
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
       <section class="desc markdown">
-        <h1>pattern_finder</h1>
-<p>A library for Dart developers.</p>
-<p>Created from templates made available by Stagehand under a BSD-style
-<a href="https://github.com/dart-lang/stagehand/blob/master/LICENSE">license</a>.</p>
+        <h2>pattern_finder <a href="https://github.com/ron4fun/pattern_finder/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg"></a> <a href="https://travis-ci.com/ron4fun/pattern_finder"><img alt="Build Status" src="https://travis-ci.com/ron4fun/pattern_finder.svg?branch=main"></a></h2>
+<p><strong><code>pattern_finder</code></strong> is a compact library written in <strong>Dart</strong> language that is primarily used for signature matching and/or wildcard pattern finder in byte streams.</p>
+<p>In addition, you can pass an anonymous function that will be called once signature is found. This function only accepts one parameter <code>the 'offset' where pattern was found</code>.</p>
 <h2>Usage</h2>
 <p>A simple usage example:</p>
-<pre class="prettyprint language-dart"><code>import 'package:pattern_finder/pattern_finder.dart';
+<pre class="language-dart prettyprint"><code class="language-dart">import 'dart:typed_data';
+import 'package:pattern_finder/pattern_finder.dart';
+
+/// Converts array from List&lt;int&gt; to Uint8List
+Uint8List toUint8List(List&lt;int&gt; buf) {
+  Uint8List data = new Uint8List(buf.length);
+  for (int i = 0; i &lt; data.length; i++) {
+    data[i] = buf[i];
+  }
+  return data;
+} // end function toUint8List
 
 main() {
-  var awesome = new Awesome();
+  /* Search for patterns using PatternFinder.Find and PatternFinder.Find_B functions */
+  var pattern = PatternFinder.Transform('456?89?B');
+
+  var buf1 = [0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF];
+  var buf2 = [0x01, 0x23, 0x45, 0x66, 0x89, 0x6B, 0xCD, 0xEF];
+  var buf3 = [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11];
+
+  int foundOffset1 =
+      PatternFinder.Find_B(toUint8List(buf1), 8, pattern); // foundOffset1: 2
+  int foundOffset2 =
+      PatternFinder.Find(toUint8List(buf2), 8, '456?89?B'); // foundOffset2: 2
+  int foundOffset3 =
+      PatternFinder.Find_B(toUint8List(buf3), 8, pattern); // foundOffset3: -1
+
+  /* Search for patterns using signatures */
+  var buf = [
+    0x01,
+    0x23,
+    0x45,
+    0x67,
+    0x89,
+    0xAB,
+    0xCD,
+    0xEF,
+    0x45,
+    0x65,
+    0x67,
+    0x89
+  ];
+
+  Signature sig1 = new Signature("pattern1", "456?89?B", func: (offset) =&gt; print('Found Pattern1!!! @ ${offset}'));
+  Signature sig2 = new Signature("pattern2", "1111111111", func: () =&gt; print('Will I make it?'));
+  Signature sig3 = new Signature("pattern3", "AB??EF", func: () =&gt; print('Found pattern3'));
+  Signature sig4 = new Signature("pattern4", "45??67", func: (int offset) {
+    // do something
+    int new_offset = offset + 4;
+    print('Found pattern4!!! Old Offset: ${offset}, New Offset: ${new_offset}');
+  });
+  List&lt;Signature&gt; signatures = [sig1, sig2, sig3, sig4];
+
+  // Run `Scan` to execute founded signatures function
+  SignatureFinder.Scan(toUint8List(buf), buf.length, signatures);
+
+  //  Found Pattern1!!! @ 2
+  //  Found pattern3
+  //  Found pattern4!!! Old Offset: 8, New Offset: 12
+
 }
 </code></pre>
-<h2>Features and bugs</h2>
-<p>Please file feature requests and bugs at the <a href="http://example.com/issues/replaceme">issue tracker</a>.</p>
+<h2>License</h2>
+<pre class="prettyprint language-dart"><code>Copyright (c) 2021 Mbadiwe Nnaemeka Ronald ron2tele@gmail.com
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the author be held liable for any damages
+arising from the use of this software.
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+claim that you wrote the original software. If you use this software
+in a product, an acknowledgment in the product documentation must be
+specified.
+
+2. Altered source versions must be plainly marked as such, and must not be
+misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source distribution.
+    
+ 
+</code></pre>
+<h4>Tip Jar</h4><ul><li>:dollar: <strong>Bitcoin</strong>: <code>1Mcci95WffSJnV6PsYG7KD1af1gDfUvLe6</code></li></ul>
       </section>
       
 
@@ -116,7 +192,7 @@ main() {
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          pattern_finder 1.0.0
+          pattern_finder 1.2.0
         </span>
         &bull;
         <span class="no-break">
