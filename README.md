@@ -2,6 +2,8 @@
 
 **`pattern_finder`** is a compact library written in **Dart** language that is primarily used for signature matching and/or wildcard pattern finder in byte streams.
 
+In addition, you can pass an anonymous function that will be called once signature is found. This function only accepts one parameter `the 'offset' where pattern was found`.
+
 ## Usage
 
 A simple usage example:
@@ -35,12 +37,6 @@ main() {
       PatternFinder.Find_B(toUint8List(buf3), 8, pattern); // foundOffset3: -1
 
   /* Search for patterns using signatures */
-  Signature sig1 = new Signature("pattern1", "456?89?B");
-  Signature sig2 = new Signature("pattern2", "1111111111");
-  Signature sig3 = new Signature("pattern3", "AB??EF");
-  Signature sig4 = new Signature("pattern4", "45??67");
-  List<Signature> signatures = [sig1, sig2, sig3, sig4];
-
   var buf = [
     0x01,
     0x23,
@@ -56,15 +52,23 @@ main() {
     0x89
   ];
 
-  List<Signature> results =
-      SignatureFinder.Scan(toUint8List(buf), buf.length, signatures);
+  Signature sig1 = new Signature("pattern1", "456?89?B", func: (offset) => print('Found Pattern1!!! @ ${offset}'));
+  Signature sig2 = new Signature("pattern2", "1111111111", func: () => print('Will I make it?'));
+  Signature sig3 = new Signature("pattern3", "AB??EF", func: () => print('Found pattern3'));
+  Signature sig4 = new Signature("pattern4", "45??67", func: (int offset) {
+    // do something
+    int new_offset = offset + 4;
+    print('Found pattern4!!! Old Offset: ${offset}, New Offset: ${new_offset}');
+  });
+  List<Signature> signatures = [sig1, sig2, sig3, sig4];
 
-  for (int i = 0; i < results.length; i++) {
-    print('Found: ${results[i]} at ${results[i].FoundOffset}');
-    //    Found: pattern1 at 2
-    //    Found: pattern3 at 5
-    //    Found: pattern4 at 8
-  }
+  // Run `Scan` to execute founded signatures function
+  SignatureFinder.Scan(toUint8List(buf), buf.length, signatures);
+
+  //  Found Pattern1!!! @ 2
+  //  Found pattern3
+  //  Found pattern4!!! Old Offset: 8, New Offset: 12
+
 }
 ```
 License
