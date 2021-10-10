@@ -186,18 +186,21 @@ class PatternFinder {
 } // end class PatternFinder
 
 /// It is a representation of wildcard search pattern with signature name with which to identify them later.
+/// In addition you can pass an anonymous function that will be called once pattern is found.
 ///
 /// ```dart
-/// Signature sig3 = new Signature("pattern3", "AB??EF");
+/// Signature sig3 = new Signature("pattern3", "AB??EF", func: () => print('Found pattern3'));
 /// ```
 class Signature {
   String _Name;
   List<_Byte> _Pattern;
   int _FoundOffset;
+  var _Func;
 
-  Signature(String name, String pattern) {
+  Signature(String name, String pattern, {func = null}) {
     _Name = name;
     _Pattern = PatternFinder.Transform(pattern);
+    _Func = func;
   } // end constructor
 
   @override
@@ -208,6 +211,9 @@ class Signature {
   List<_Byte> get Pattern => _Pattern;
 
   int get FoundOffset => _FoundOffset;
+
+  // execute function
+  get ExecFunc => _Func;
 
   set FoundOffset(int value) => _FoundOffset = value;
 } // end class Signature
@@ -234,6 +240,16 @@ class SignatureFinder {
       tempOffset = PatternFinder.Find_B(data, length, sigs[i].Pattern);
       if (tempOffset != -1) {
         sigs[i].FoundOffset = tempOffset;
+        if (sigs[i].ExecFunc != null) {
+          try {
+            sigs[i].ExecFunc(tempOffset);
+          } on NoSuchMethodError {
+            sigs[i].ExecFunc();
+          } catch (e) {
+            throw new Exception('Incorrectly formed signature function');
+          }
+        }
+        // add to found signatures array
         found.add(sigs[i]);
       } // end if
     } // end for
