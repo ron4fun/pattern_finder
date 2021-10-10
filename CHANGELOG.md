@@ -5,3 +5,8 @@
 ## 1.0.1
 
 - Updated readme, changelog
+
+## 1.2.0
+
+- Added additional argument to the Signature object to 
+    allow for anonymous function execution.
