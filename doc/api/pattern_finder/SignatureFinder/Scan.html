@@ -103,7 +103,7 @@
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
     <section class="multi-line-signature">
       <span class="returntype">List&lt;<a href="pattern_finder/Signature-class.html">Signature</a>&gt;</span>
-      <span class="name ">Scan</span>(<wbr><span class="parameter" id="Scan-param-data"><span class="type-annotation">Uint8List</span> <span class="parameter-name">data</span>, </span> <span class="parameter" id="Scan-param-length"><span class="type-annotation">int</span> <span class="parameter-name">length</span>, </span> <span class="parameter" id="Scan-param-signatures"><span class="type-annotation">List&lt;<a href="pattern_finder/Signature-class.html">Signature</a>&gt;</span> <span class="parameter-name">signatures</span></span>)
+      <span class="name ">Scan</span>(<wbr><span class="parameter" id="Scan-param-data"><span class="type-annotation">List&lt;int&gt;</span> <span class="parameter-name">data</span>, </span> <span class="parameter" id="Scan-param-length"><span class="type-annotation">int</span> <span class="parameter-name">length</span>, </span> <span class="parameter" id="Scan-param-signatures"><span class="type-annotation">List&lt;<a href="pattern_finder/Signature-class.html">Signature</a>&gt;</span> <span class="parameter-name">signatures</span></span>)
     </section>
     <section class="desc markdown">
       <p>Returns a list of found signatures.</p>
@@ -114,7 +114,7 @@
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
       <pre class="prettyprint language-dart">static List&lt;Signature&gt; Scan(
-    Uint8List data, int length, List&lt;Signature&gt; signatures) {
+    List&lt;int&gt; data, int length, List&lt;Signature&gt; signatures) {
   int tempOffset;
 
   List&lt;Signature&gt; found = [];
@@ -152,7 +152,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          pattern_finder 1.2.0
+          pattern_finder 1.3.0
         </span>
         &bull;
         <span class="no-break">
