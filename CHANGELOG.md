@@ -10,3 +10,7 @@
 
 - Added additional argument to the Signature object to 
     allow for anonymous function execution.
+    
+## 1.3.0
+
+- Added param type bytes representation to List<int> type.
