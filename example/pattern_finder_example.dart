@@ -1,15 +1,6 @@
 import 'dart:typed_data';
 import 'package:pattern_finder/pattern_finder.dart';
 
-/// Converts array from List<int> to Uint8List
-Uint8List toUint8List(List<int> buf) {
-  Uint8List data = new Uint8List(buf.length);
-  for (int i = 0; i < data.length; i++) {
-    data[i] = buf[i];
-  }
-  return data;
-} // end function toUint8List
-
 main() {
   /* Search for patterns using PatternFinder.Find and PatternFinder.Find_B functions */
   var pattern = PatternFinder.Transform('456?89?B');
@@ -19,11 +10,11 @@ main() {
   var buf3 = [0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11];
 
   int foundOffset1 =
-      PatternFinder.Find_B(toUint8List(buf1), 8, pattern); // foundOffset1: 2
+      PatternFinder.Find_B(buf1, 8, pattern); // foundOffset1: 2
   int foundOffset2 =
-      PatternFinder.Find(toUint8List(buf2), 8, '456?89?B'); // foundOffset2: 2
+      PatternFinder.Find(buf2, 8, '456?89?B'); // foundOffset2: 2
   int foundOffset3 =
-      PatternFinder.Find_B(toUint8List(buf3), 8, pattern); // foundOffset3: -1
+      PatternFinder.Find_B(buf3, 8, pattern); // foundOffset3: -1
 
   /* Search for patterns using signatures */
   var buf = [
@@ -55,7 +46,7 @@ main() {
   List<Signature> signatures = [sig1, sig2, sig3, sig4];
 
   // Run `Scan` to execute founded signatures function
-  SignatureFinder.Scan(toUint8List(buf), buf.length, signatures);
+  SignatureFinder.Scan(buf, buf.length, signatures);
 
   //  Found Pattern1!!! @ 2
   //  Found pattern3

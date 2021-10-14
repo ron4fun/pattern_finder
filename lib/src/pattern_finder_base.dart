@@ -109,7 +109,7 @@ class PatternFinder {
   /// ```dart
   /// var offset = PatternFinder.Find_B(buffer, 8, pattern); // offset: 2
   ///
-  static int Find_B(Uint8List data, int length, List<_Byte> pattern) {
+  static int Find_B(List<int> data, int length, List<_Byte> pattern) {
     int offsetFound = -1;
 
     if (data == null || pattern.isEmpty) return offsetFound;
@@ -145,7 +145,7 @@ class PatternFinder {
   /// ```dart
   /// var offset = PatternFinder.Find(buffer, 8, pattern); // offset: 2
   /// ```
-  static int Find(Uint8List data, int length, String pattern) =>
+  static int Find(List<int> data, int length, String pattern) =>
       Find_B(data, length, PatternFinder.Transform(pattern));
 
   static int _HexChToInt(int ch) {
@@ -230,7 +230,7 @@ class SignatureFinder {
   /// var results = SignatureFinder.Scan(buffer, buffer.length, signatures);
   /// ```
   static List<Signature> Scan(
-      Uint8List data, int length, List<Signature> signatures) {
+      List<int> data, int length, List<Signature> signatures) {
     int tempOffset;
 
     List<Signature> found = [];
