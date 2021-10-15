@@ -14,3 +14,7 @@
 ## 1.3.0
 
 - Added param type bytes representation to List<int> type.
+
+## 1.3.1
+
+- Updated README
